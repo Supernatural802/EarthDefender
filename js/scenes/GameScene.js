@@ -298,8 +298,8 @@ class GameScene extends Phaser.Scene {
 
     getTappedEnemy(x, y) {
         let closestEnemy = null;
-        // Larger tap tolerance for mobile (50px instead of 40px)
-        let closestDistance = 50;
+        // Larger tap tolerance for mobile and bigger enemies
+        let closestDistance = 60;
 
         this.enemies.getChildren().forEach(enemy => {
             if (!enemy.active) return;
@@ -423,6 +423,7 @@ class GameScene extends Phaser.Scene {
         enemy.lastFired = 0;
         enemy.isShielded = false;
         enemy.setDepth(8);
+        enemy.setScale(1.25); // 25% larger enemies
 
         // Play animation
         enemy.play(`${spriteKey}-idle`);
@@ -469,13 +470,14 @@ class GameScene extends Phaser.Scene {
     }
 
     createEnemyHealthBar(enemy) {
-        const barWidth = 30;
-        const barHeight = 4;
+        const barWidth = 38; // Larger for bigger enemies
+        const barHeight = 5;
+        const barOffset = 32; // Further offset for larger enemies
         
-        enemy.healthBarBg = this.add.rectangle(enemy.x, enemy.y - 25, barWidth, barHeight, 0x333333);
+        enemy.healthBarBg = this.add.rectangle(enemy.x, enemy.y - barOffset, barWidth, barHeight, 0x333333);
         enemy.healthBarBg.setDepth(9);
         
-        enemy.healthBar = this.add.rectangle(enemy.x - barWidth/2 + 1, enemy.y - 25, barWidth - 2, barHeight - 2, 0x00ff00);
+        enemy.healthBar = this.add.rectangle(enemy.x - barWidth/2 + 1, enemy.y - barOffset, barWidth - 2, barHeight - 2, 0x00ff00);
         enemy.healthBar.setOrigin(0, 0.5);
         enemy.healthBar.setDepth(9);
     }
@@ -495,8 +497,8 @@ class GameScene extends Phaser.Scene {
             this.shieldedEnemy = target;
             specialEnemy.shieldTarget = target;
 
-            // Visual shield effect
-            target.shieldGraphic = this.add.circle(target.x, target.y, 25, 0xaa44ff, 0.3);
+            // Visual shield effect - larger for bigger enemies
+            target.shieldGraphic = this.add.circle(target.x, target.y, 32, 0xaa44ff, 0.3);
             target.shieldGraphic.setStrokeStyle(2, 0xdd88ff);
             target.shieldGraphic.setDepth(7);
 
@@ -682,7 +684,7 @@ class GameScene extends Phaser.Scene {
         // Update health bar
         if (enemy.healthBar) {
             const percent = enemy.health / enemy.maxHealth;
-            enemy.healthBar.width = 28 * percent;
+            enemy.healthBar.width = 36 * percent; // Larger bar for bigger enemies
             
             if (percent <= 0.3) {
                 enemy.healthBar.setFillStyle(0xff0000);
@@ -1542,12 +1544,12 @@ class GameScene extends Phaser.Scene {
                 });
             }
 
-            // Update health bar position
+            // Update health bar position (offset for larger enemies)
             if (enemy.healthBar) {
-                enemy.healthBar.x = enemy.x - 14;
-                enemy.healthBar.y = enemy.y - 25;
+                enemy.healthBar.x = enemy.x - 18;
+                enemy.healthBar.y = enemy.y - 32;
                 enemy.healthBarBg.x = enemy.x;
-                enemy.healthBarBg.y = enemy.y - 25;
+                enemy.healthBarBg.y = enemy.y - 32;
             }
 
             // Update shield graphic position
