@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V2 Tap Defense - Sprite Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #0a0a1a;
+            color: #fff;
+        }
+        h1 { color: #00ff88; margin-bottom: 5px; }
+        h2 { color: #88aaff; margin-top: 25px; font-size: 18px; }
+        .subtitle { color: #aa44ff; margin-bottom: 25px; }
+        canvas { 
+            border: 1px solid #4a4a6a;
+            background: #000;
+            margin: 5px 0;
+        }
+        .sprite-section {
+            background: #1a1a2e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: inline-block;
+            vertical-align: top;
+            width: calc(50% - 20px);
+            margin-right: 10px;
+            box-sizing: border-box;
+        }
+        .sprite-section.full { width: 100%; }
+        button {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin: 3px;
+        }
+        button:hover { background: #00dd66; }
+        .preview { margin-top: 8px; }
+        .preview img {
+            image-rendering: pixelated;
+            border: 1px solid #4a4a6a;
+        }
+        .info {
+            background: #2d2d44;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 8px 0;
+            font-size: 12px;
+        }
+        .download-all {
+            background: #ff6600;
+            font-size: 16px;
+            padding: 12px 30px;
+            margin: 15px 0;
+        }
+        .download-all:hover { background: #dd5500; }
+        .color-green { color: #44ff44; }
+        .color-yellow { color: #ffff44; }
+        .color-red { color: #ff4444; }
+        .color-purple { color: #aa44ff; }
+    </style>
+</head>
+<body>
+    <h1>Save the Earth V2 - Sprite Generator</h1>
+    <p class="subtitle">TAP DEFENSE Edition - All sprites for the new game</p>
+
+    <button class="download-all" onclick="downloadAll()">Download All Sprites (13 files)</button>
+
+    <!-- Player Platform -->
+    <div class="sprite-section">
+        <h2>Player Defense Platform</h2>
+        <div class="info">64×48 pixels, 2 frames</div>
+        <canvas id="player-platform" width="128" height="48"></canvas>
+        <div class="preview">
+            <img id="player-platform-preview" height="96">
+        </div>
+        <button onclick="downloadSprite('player-platform')">Download</button>
+    </div>
+
+    <!-- Player Laser -->
+    <div class="sprite-section">
+        <h2>Player Laser</h2>
+        <div class="info">6×20 pixels</div>
+        <canvas id="player-laser" width="6" height="20"></canvas>
+        <div class="preview">
+            <img id="player-laser-preview" height="80">
+        </div>
+        <button onclick="downloadSprite('player-laser')">Download</button>
+    </div>
+
+    <!-- Enemy Laser -->
+    <div class="sprite-section">
+        <h2>Enemy Laser</h2>
+        <div class="info">4×16 pixels</div>
+        <canvas id="enemy-laser" width="4" height="16"></canvas>
+        <div class="preview">
+            <img id="enemy-laser-preview" height="64">
+        </div>
+        <button onclick="downloadSprite('enemy-laser')">Download</button>
+    </div>
+
+    <!-- Enemy A -->
+    <div class="sprite-section">
+        <h2 class="color-green">Enemy A (Easy)</h2>
+        <div class="info">32×32 pixels, 4 frames - Low health, weak damage</div>
+        <canvas id="enemy-a" width="128" height="32"></canvas>
+        <div class="preview">
+            <img id="enemy-a-preview" height="64">
+        </div>
+        <button onclick="downloadSprite('enemy-a')">Download</button>
+    </div>
+
+    <!-- Enemy B -->
+    <div class="sprite-section">
+        <h2 class="color-yellow">Enemy B (Medium)</h2>
+        <div class="info">32×32 pixels, 4 frames - Medium health, medium damage</div>
+        <canvas id="enemy-b" width="128" height="32"></canvas>
+        <div class="preview">
+            <img id="enemy-b-preview" height="64">
+        </div>
+        <button onclick="downloadSprite('enemy-b')">Download</button>
+    </div>
+
+    <!-- Enemy C -->
+    <div class="sprite-section">
+        <h2 class="color-red">Enemy C (Hard)</h2>
+        <div class="info">32×32 pixels, 4 frames - High health, high damage</div>
+        <canvas id="enemy-c" width="128" height="32"></canvas>
+        <div class="preview">
+            <img id="enemy-c-preview" height="64">
+        </div>
+        <button onclick="downloadSprite('enemy-c')">Download</button>
+    </div>
+
+    <!-- Enemy Special -->
+    <div class="sprite-section">
+        <h2 class="color-purple">Enemy Special (Power Core Carrier)</h2>
+        <div class="info">40×40 pixels, 4 frames - Shields enemies, drops power core</div>
+        <canvas id="enemy-special" width="160" height="40"></canvas>
+        <div class="preview">
+            <img id="enemy-special-preview" height="80">
+        </div>
+        <button onclick="downloadSprite('enemy-special')">Download</button>
+    </div>
+
+    <!-- Power Core -->
+    <div class="sprite-section">
+        <h2 class="color-purple">Power Core</h2>
+        <div class="info">24×24 pixels, 6 frames - Charges mega blast</div>
+        <canvas id="power-core" width="144" height="24"></canvas>
+        <div class="preview">
+            <img id="power-core-preview" height="48">
+        </div>
+        <button onclick="downloadSprite('power-core')">Download</button>
+    </div>
+
+    <!-- Power-ups -->
+    <div class="sprite-section">
+        <h2>Power-up: Multi-Shot</h2>
+        <div class="info">24×24 pixels</div>
+        <canvas id="powerup-multishot" width="24" height="24"></canvas>
+        <div class="preview">
+            <img id="powerup-multishot-preview" height="72">
+        </div>
+        <button onclick="downloadSprite('powerup-multishot')">Download</button>
+    </div>
+
+    <div class="sprite-section">
+        <h2>Power-up: Health</h2>
+        <div class="info">24×24 pixels</div>
+        <canvas id="powerup-health" width="24" height="24"></canvas>
+        <div class="preview">
+            <img id="powerup-health-preview" height="72">
+        </div>
+        <button onclick="downloadSprite('powerup-health')">Download</button>
+    </div>
+
+    <div class="sprite-section">
+        <h2>Power-up: Insta-Kill</h2>
+        <div class="info">24×24 pixels</div>
+        <canvas id="powerup-instakill" width="24" height="24"></canvas>
+        <div class="preview">
+            <img id="powerup-instakill-preview" height="72">
+        </div>
+        <button onclick="downloadSprite('powerup-instakill')">Download</button>
+    </div>
+
+    <!-- Earth -->
+    <div class="sprite-section">
+        <h2>Earth</h2>
+        <div class="info">64×64 pixels, 8 frames</div>
+        <canvas id="earth" width="512" height="64"></canvas>
+        <div class="preview">
+            <img id="earth-preview" height="64">
+        </div>
+        <button onclick="downloadSprite('earth')">Download</button>
+    </div>
+
+    <!-- Mothership -->
+    <div class="sprite-section full">
+        <h2>Mothership (Boss)</h2>
+        <div class="info">128×64 pixels, 4 frames</div>
+        <canvas id="mothership" width="512" height="64"></canvas>
+        <div class="preview">
+            <img id="mothership-preview" height="128">
+        </div>
+        <button onclick="downloadSprite('mothership')">Download</button>
+    </div>
+
+    <script>
+        // ===== PLAYER PLATFORM =====
+        function drawPlayerPlatform() {
+            const canvas = document.getElementById('player-platform');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let frame = 0; frame < 2; frame++) {
+                const x = frame * 64 + 32;
+                const y = 28;
+
+                // Base platform
+                ctx.fillStyle = '#3366aa';
+                ctx.beginPath();
+                ctx.moveTo(x - 28, y + 12);
+                ctx.lineTo(x - 20, y - 5);
+                ctx.lineTo(x + 20, y - 5);
+                ctx.lineTo(x + 28, y + 12);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.strokeStyle = '#2244778';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Turret
+                ctx.fillStyle = '#4488cc';
+                ctx.beginPath();
+                ctx.arc(x, y - 2, 12, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Cannon
+                ctx.fillStyle = '#5599dd';
+                ctx.fillRect(x - 3, y - 20, 6, 15);
+
+                // Cannon tip glow
+                const glowSize = frame === 0 ? 4 : 6;
+                ctx.fillStyle = '#88ffff';
+                ctx.beginPath();
+                ctx.arc(x, y - 20, glowSize, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Side thrusters
+                ctx.fillStyle = '#2255aa';
+                ctx.fillRect(x - 25, y + 5, 8, 10);
+                ctx.fillRect(x + 17, y + 5, 8, 10);
+
+                // Thruster glow
+                const thrustAlpha = frame === 0 ? 0.6 : 1;
+                ctx.fillStyle = `rgba(0, 200, 255, ${thrustAlpha})`;
+                ctx.fillRect(x - 24, y + 13, 6, 4);
+                ctx.fillRect(x + 18, y + 13, 6, 4);
+            }
+
+            document.getElementById('player-platform-preview').src = canvas.toDataURL('image/png');
+        }
+
+        // ===== PLAYER LASER =====
+        function drawPlayerLaser() {
+            const canvas = document.getElementById('player-laser');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Outer glow
+            const gradient = ctx.createLinearGradient(3, 0, 3, 20);
+            gradient.addColorStop(0, '#00ffff');
+            gradient.addColorStop(0.5, '#0088ff');
+            gradient.addColorStop(1, '#00ffff');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(1, 0, 4, 20);
+
+            // Core
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(2, 2, 2, 16);
+
+            document.getElementById('player-laser-preview').src = canvas.toDataURL('image/png');
+        }
+
+        // ===== ENEMY LASER =====
+        function drawEnemyLaser() {
+            const canvas = document.getElementById('enemy-laser');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const gradient = ctx.createLinearGradient(2, 0, 2, 16);
+            gradient.addColorStop(0, '#ff4444');
+            gradient.addColorStop(0.5, '#ff8800');
+            gradient.addColorStop(1, '#ff4444');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 4, 16);
+
+            ctx.fillStyle = '#ffff88';
+            ctx.fillRect(1, 2, 2, 12);
+
+            document.getElementById('enemy-laser-preview').src = canvas.toDataURL('image/png');
+        }
+
+        // ===== ENEMY DRAWING HELPER =====
+        function drawEnemy(canvasId, color, highlightColor, darkColor) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let frame = 0; frame < 4; frame++) {
+                const x = frame * 32 + 16;
+                const y = 16;
+                const pulse = Math.sin(frame * Math.PI / 2) * 2;
+
+                // Body
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, 11 + pulse * 0.3, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.strokeStyle = darkColor;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Eye(s)
+                ctx.fillStyle = '#111';
+                ctx.beginPath();
+                ctx.ellipse(x, y - 2, 6, 4, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Pupil (looks around based on frame)
+                const pupilX = x + (frame - 1.5) * 2;
+                ctx.fillStyle = highlightColor;
+                ctx.beginPath();
+                ctx.arc(pupilX, y - 2, 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Bottom weapon
+                ctx.fillStyle = darkColor;
+                ctx.fillRect(x - 3, y + 8, 6, 6);
+                
+                // Weapon glow
+                ctx.fillStyle = highlightColor;
+                ctx.beginPath();
+                ctx.arc(x, y + 14, 2 + pulse * 0.2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            document.getElementById(canvasId + '-preview').src = canvas.toDataURL('image/png');
+        }
+
+        // ===== ENEMY SPECIAL =====
+        function drawEnemySpecial() {
+            const canvas = document.getElementById('enemy-special');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let frame = 0; frame < 4; frame++) {
+                const x = frame * 40 + 20;
+                const y = 20;
+                const pulse = Math.sin(frame * Math.PI / 2);
+
+                // Outer shield glow
+                ctx.fillStyle = `rgba(170, 68, 255, ${0.2 + pulse * 0.1})`;
+                ctx.beginPath();
+                ctx.arc(x, y, 18, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Crystal body
+                ctx.fillStyle = '#8844aa';
+                ctx.beginPath();
+                ctx.moveTo(x, y - 14);
+                ctx.lineTo(x + 12, y);
+                ctx.lineTo(x, y + 14);
+                ctx.lineTo(x - 12, y);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.strokeStyle = '#663388';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Inner crystal
+                ctx.fillStyle = '#aa66cc';
+                ctx.beginPath();
+                ctx.moveTo(x, y - 8);
+                ctx.lineTo(x + 6, y);
+                ctx.lineTo(x, y + 8);
+                ctx.lineTo(x - 6, y);
+                ctx.closePath();
+                ctx.fill();
+
+                // Core glow
+                ctx.fillStyle = '#dd88ff';
+                ctx.beginPath();
+                ctx.arc(x, y, 4 + pulse, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Shield emitters
+                const emitterPositions = [
+                    { dx: -10, dy: -10 },
+                    { dx: 10, dy: -10 },
+                    { dx: -10, dy: 10 },
+                    { dx: 10, dy: 10 }
+                ];
+
+                emitterPositions.forEach((pos, i) => {
+                    const active = (frame + i) % 2 === 0;
+                    ctx.fillStyle = active ? '#ff88ff' : '#884488';
+                    ctx.beginPath();
+                    ctx.arc(x + pos.dx, y + pos.dy, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+
+            document.getElementById('enemy-special-preview').src = canvas.toDataURL('image/png');
+        }
+
+        // ===== POWER CORE =====
+        function drawPowerCore() {
+            const canvas = document.getElementById('power-core');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let frame = 0; frame < 6; frame++) {
+                const x = frame * 24 + 12;
+                const y = 12;
+                const rotation = (frame / 6) * Math.PI * 2;
+
+                // Outer glow
+                ctx.fillStyle = `rgba(170, 68, 255, 0.3)`;
+                ctx.beginPath();
+                ctx.arc(x, y, 10, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(rotation);
+
+                // Core shape
+                ctx.fillStyle = '#aa44ff';
+                ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = (i / 6) * Math.PI * 2;
+                    const r = i % 2 === 0 ? 8 : 4;
+                    const px = Math.cos(angle) * r;
+                    const py = Math.sin(angle) * r;
+                    if (i === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.closePath();
+                ctx.fill();
+
+                // Inner glow
+                ctx.fillStyle = '#dd88ff';
+                ctx.beginPath();
+                ctx.arc(0, 0, 3, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
+            }
+
+            document.getElementById('power-core-preview').src = canvas.toDataURL('image/png');
+        }
+
+        // ===== POWER-UPS =====
+        function drawPowerUpMultishot() {
+            const canvas = document.getElementById('powerup-multishot');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background
+            ctx.fillStyle = '#224466';
+            ctx.beginPath();
+            ctx.arc(12, 12, 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#44aaff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Triple arrows
+            ctx.fillStyle = '#88ffff';
+            ctx.beginPath();
+            ctx.moveTo(12, 4);
+            ctx.lineTo(14, 10);
+            ctx.lineTo(10, 10);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(6, 8);
+            ctx.lineTo(10, 14);
+            ctx.lineTo(6, 14);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(18, 8);
+            ctx.lineTo(14, 14);
+            ctx.lineTo(18, 14);
+            ctx.closePath();
+            ctx.fill();
+
+            document.getElementById('powerup-multishot-preview').src = canvas.toDataURL('image/png');
+        }
+
+        function drawPowerUpHealth() {
+            const canvas = document.getElementById('powerup-health');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background
+            ctx.fillStyle = '#225522';
+            ctx.beginPath();
+            ctx.arc(12, 12, 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#44ff44';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Plus sign
+            ctx.fillStyle = '#88ff88';
+            ctx.fillRect(10, 5, 4, 14);
+            ctx.fillRect(5, 10, 14, 4);
+
+            document.getElementById('powerup-health-preview').src = canvas.toDataURL('image/png');
+        }
+
+        function drawPowerUpInstakill() {
+            const canvas = document.getElementById('powerup-instakill');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background
+            ctx.fillStyle = '#442200';
+            ctx.beginPath();
+            ctx.arc(12, 12, 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#ff8800';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Lightning bolt
+            ctx.fillStyle = '#ffff00';
+            ctx.beginPath();
+            ctx.moveTo(14, 4);
+            ctx.lineTo(10, 11);
+            ctx.lineTo(13, 11);
+            ctx.lineTo(10, 20);
+            ctx.lineTo(16, 10);
+            ctx.lineTo(13, 10);
+            ctx.closePath();
+            ctx.fill();
+
+            document.getElementById('powerup-instakill-preview').src = canvas.toDataURL('image/png');
+        }
+
+        // ===== EARTH =====
+        function drawEarth() {
+            const canvas = document.getElementById('earth');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const continents = [
+                { x: 0.2, y: 0.3, w: 0.3, h: 0.4 },
+                { x: 0.6, y: 0.2, w: 0.2, h: 0.3 },
+                { x: 0.5, y: 0.6, w: 0.25, h: 0.2 },
+            ];
+
+            for (let frame = 0; frame < 8; frame++) {
+                const centerX = frame * 64 + 32;
+                const centerY = 32;
+                const radius = 28;
+
+                // Ocean
+                ctx.fillStyle = '#2244aa';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Continents
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.clip();
+
+                ctx.fillStyle = '#44aa44';
+                continents.forEach(cont => {
+                    const rotatedX = cont.x + (frame / 8);
+                    const actualX = ((rotatedX % 1) - 0.5) * radius * 2;
+                    const actualY = (cont.y - 0.5) * radius * 2;
+                    
+                    if (Math.abs(actualX) < radius * 0.9) {
+                        ctx.beginPath();
+                        ctx.ellipse(
+                            centerX + actualX,
+                            centerY + actualY,
+                            cont.w * radius * Math.cos(actualX / radius),
+                            cont.h * radius,
+                            0, 0, Math.PI * 2
+                        );
+                        ctx.fill();
+                    }
+                });
+
+                // Atmosphere
+                const gradient = ctx.createRadialGradient(centerX, centerY, radius - 5, centerX, centerY, radius + 2);
+                gradient.addColorStop(0, 'transparent');
+                gradient.addColorStop(0.7, 'rgba(100, 180, 255, 0.3)');
+                gradient.addColorStop(1, 'rgba(100, 180, 255, 0.5)');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius + 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
+
+                // Outline
+                ctx.strokeStyle = '#6699ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            document.getElementById('earth-preview').src = canvas.toDataURL('image/png');
+        }
+
+        // ===== MOTHERSHIP =====
+        function drawMothership() {
+            const canvas = document.getElementById('mothership');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let frame = 0; frame < 4; frame++) {
+                const centerX = frame * 128 + 64;
+                const centerY = 32;
+
+                // Main body
+                ctx.fillStyle = '#443355';
+                ctx.beginPath();
+                ctx.ellipse(centerX, centerY, 55, 22, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.strokeStyle = '#665577';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Top dome
+                ctx.fillStyle = '#332244';
+                ctx.beginPath();
+                ctx.ellipse(centerX, centerY - 8, 30, 15, 0, Math.PI, 0);
+                ctx.fill();
+                ctx.stroke();
+
+                // Dome window
+                ctx.fillStyle = '#ff4444';
+                ctx.beginPath();
+                ctx.ellipse(centerX, centerY - 12, 10, 6, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Pulsing lights
+                const lightBrightness = (Math.sin(frame * Math.PI / 2) + 1) / 2;
+                
+                for (let i = -3; i <= 3; i++) {
+                    const lightX = centerX + i * 14;
+                    const lightY = centerY + 12;
+                    const colorIndex = (i + frame) % 2;
+                    
+                    ctx.fillStyle = colorIndex === 0 
+                        ? `rgba(255, ${Math.floor(100 + lightBrightness * 155)}, 0, ${0.5 + lightBrightness * 0.5})`
+                        : `rgba(255, ${Math.floor(50 + lightBrightness * 100)}, 0, ${0.5 + lightBrightness * 0.5})`;
+                    
+                    ctx.beginPath();
+                    ctx.arc(lightX, lightY, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Side cannons
+                ctx.fillStyle = '#554466';
+                ctx.fillRect(centerX - 50, centerY - 5, 15, 10);
+                ctx.fillRect(centerX + 35, centerY - 5, 15, 10);
+
+                ctx.fillStyle = '#ff6666';
+                ctx.beginPath();
+                ctx.arc(centerX - 52, centerY, 4, 0, Math.PI * 2);
+                ctx.arc(centerX + 52, centerY, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            document.getElementById('mothership-preview').src = canvas.toDataURL('image/png');
+        }
+
+        // ===== DOWNLOAD FUNCTIONS =====
+        function downloadSprite(name) {
+            const canvas = document.getElementById(name);
+            const link = document.createElement('a');
+            link.download = name + '.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function downloadAll() {
+            const sprites = [
+                'player-platform', 'player-laser', 'enemy-laser',
+                'enemy-a', 'enemy-b', 'enemy-c', 'enemy-special',
+                'power-core', 'powerup-multishot', 'powerup-health', 'powerup-instakill',
+                'earth', 'mothership'
+            ];
+            sprites.forEach((sprite, index) => {
+                setTimeout(() => downloadSprite(sprite), index * 100);
+            });
+        }
+
+        // Generate all sprites on load
+        drawPlayerPlatform();
+        drawPlayerLaser();
+        drawEnemyLaser();
+        drawEnemy('enemy-a', '#44ff44', '#88ff88', '#228822');
+        drawEnemy('enemy-b', '#ffff44', '#ffffaa', '#888822');
+        drawEnemy('enemy-c', '#ff4444', '#ff8888', '#882222');
+        drawEnemySpecial();
+        drawPowerCore();
+        drawPowerUpMultishot();
+        drawPowerUpHealth();
+        drawPowerUpInstakill();
+        drawEarth();
+        drawMothership();
+    </script>
+</body>
+</html>
