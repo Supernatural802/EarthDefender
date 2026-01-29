@@ -7,9 +7,9 @@ class BootScene extends Phaser.Scene {
     preload() {
         this.createLoadingBar();
 
-        // Player defense platform
+        // Player spaceship
         this.load.spritesheet('player-platform', 'assets/player-platform.png', {
-            frameWidth: 64,
+            frameWidth: 48,
             frameHeight: 48
         });
 
@@ -110,11 +110,11 @@ class BootScene extends Phaser.Scene {
     }
 
     createAnimations() {
-        // Player platform idle
+        // Player spaceship idle animation
         this.anims.create({
             key: 'platform-idle',
             frames: this.anims.generateFrameNumbers('player-platform', { start: 0, end: 1 }),
-            frameRate: 6,
+            frameRate: 8,
             repeat: -1
         });
 

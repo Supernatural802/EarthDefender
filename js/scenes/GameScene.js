@@ -109,13 +109,13 @@ class GameScene extends Phaser.Scene {
         this.powerCores = this.physics.add.group();
         this.powerUps = this.physics.add.group();
 
-        // Create the player defense platform (stationary, above Earth) - portrait mode
+        // Create the player spaceship (stationary, above Earth) - portrait mode
         this.player = this.physics.add.sprite(200, 545, 'player-platform');
-        this.player.setScale(1.1);
+        this.player.setScale(1.2);
         this.player.play('platform-idle');
         this.player.setDepth(10);
         this.player.setImmovable(true);
-        this.player.body.setSize(60, 40);
+        this.player.body.setSize(40, 40);
 
         // Setup collisions
         this.physics.add.overlap(this.playerLasers, this.enemies, this.laserHitEnemy, null, this);
