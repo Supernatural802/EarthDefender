@@ -1,20 +1,20 @@
-// Phaser Game Configuration - Space Shooter (Mobile Ready)
+// Phaser Game Configuration - Space Shooter (Portrait Mobile Ready)
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 400,
+    height: 700,
     parent: 'game-container',
     backgroundColor: '#0a0a1a',
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         min: {
-            width: 400,
-            height: 300
+            width: 300,
+            height: 525
         },
         max: {
-            width: 1600,
-            height: 1200
+            width: 800,
+            height: 1400
         }
     },
     physics: {

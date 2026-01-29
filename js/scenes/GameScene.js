@@ -109,9 +109,9 @@ class GameScene extends Phaser.Scene {
         this.powerCores = this.physics.add.group();
         this.powerUps = this.physics.add.group();
 
-        // Create the player defense platform (stationary, above Earth)
-        this.player = this.physics.add.sprite(400, 440, 'player-platform');
-        this.player.setScale(1.2);
+        // Create the player defense platform (stationary, above Earth) - portrait mode
+        this.player = this.physics.add.sprite(200, 545, 'player-platform');
+        this.player.setScale(1.1);
         this.player.play('platform-idle');
         this.player.setDepth(10);
         this.player.setImmovable(true);
@@ -149,9 +149,10 @@ class GameScene extends Phaser.Scene {
     createStarfield() {
         this.stars = [];
         
-        for (let i = 0; i < 80; i++) {
-            const x = Phaser.Math.Between(0, 800);
-            const y = Phaser.Math.Between(0, 600);
+        // Portrait dimensions: 400x700
+        for (let i = 0; i < 60; i++) {
+            const x = Phaser.Math.Between(0, 400);
+            const y = Phaser.Math.Between(0, 700);
             const size = Phaser.Math.Between(1, 2);
             const alpha = Phaser.Math.FloatBetween(0.2, 0.8);
             
@@ -162,119 +163,114 @@ class GameScene extends Phaser.Scene {
     }
 
     createEarth() {
-        // Earth sprite - large, fills bottom of screen
-        this.earth = this.physics.add.sprite(400, 560, 'earth');
-        this.earth.setScale(2.5); // Much larger
+        // Earth sprite - portrait mode: bottom center
+        this.earth = this.physics.add.sprite(200, 660, 'earth');
+        this.earth.setScale(2.2); // Slightly smaller for portrait
         this.earth.play('earth-rotate');
         this.earth.setDepth(5);
         
-        // Set physics body to cover the scaled sprite area
-        // Original sprite is 64x64, scaled 2.5x = 160x160
-        // We want a wide rectangular hitbox at the top of the earth
-        this.earth.body.setSize(140, 40);
-        this.earth.body.setOffset(-38, 0); // Center the body
+        // Set physics body
+        this.earth.body.setSize(120, 35);
+        this.earth.body.setOffset(-28, 0);
         this.earth.setImmovable(true);
 
-        // Earth health bar background
-        this.earthHealthBarBg = this.add.rectangle(400, 480, 200, 14, 0x333333);
+        // Earth health bar background - positioned above Earth
+        this.earthHealthBarBg = this.add.rectangle(200, 590, 180, 12, 0x333333);
         this.earthHealthBarBg.setStrokeStyle(2, 0x4488ff);
         this.earthHealthBarBg.setDepth(6);
 
         // Earth health bar fill
-        this.earthHealthBar = this.add.rectangle(301, 480, 196, 10, 0x00ff00);
+        this.earthHealthBar = this.add.rectangle(111, 590, 176, 8, 0x00ff00);
         this.earthHealthBar.setOrigin(0, 0.5);
         this.earthHealthBar.setDepth(6);
     }
 
     createMothership() {
-        this.mothership = this.physics.add.sprite(400, 50, 'mothership');
-        this.mothership.setScale(1);
+        // Portrait mode: top center with narrower movement
+        this.mothership = this.physics.add.sprite(200, 50, 'mothership');
+        this.mothership.setScale(0.9);
         this.mothership.play('mothership-idle');
         this.mothership.setDepth(5);
         this.mothership.setImmovable(true);
 
-        // Mothership movement
+        // Mothership movement - narrower for portrait
         this.tweens.add({
             targets: this.mothership,
-            x: { from: 150, to: 650 },
-            duration: 4000,
+            x: { from: 80, to: 320 },
+            duration: 3500,
             yoyo: true,
             repeat: -1,
             ease: 'Sine.easeInOut'
         });
 
         // Health bar background
-        this.mothershipHealthBarBg = this.add.rectangle(400, 90, 160, 14, 0x333333);
+        this.mothershipHealthBarBg = this.add.rectangle(200, 88, 140, 12, 0x333333);
         this.mothershipHealthBarBg.setStrokeStyle(2, 0xff4444);
         this.mothershipHealthBarBg.setDepth(6);
 
         // Health bar fill
-        this.mothershipHealthBar = this.add.rectangle(321, 90, 156, 10, 0xff4444);
+        this.mothershipHealthBar = this.add.rectangle(131, 88, 136, 8, 0xff4444);
         this.mothershipHealthBar.setOrigin(0, 0.5);
         this.mothershipHealthBar.setDepth(6);
 
         // Boss label
-        this.add.text(400, 105, 'MOTHERSHIP', {
-            font: 'bold 11px Arial',
+        this.add.text(200, 102, 'MOTHERSHIP', {
+            font: 'bold 10px Arial',
             fill: '#ff6666'
         }).setOrigin(0.5).setDepth(6);
     }
 
     createUI() {
-        // Score
-        this.scoreText = this.add.text(16, 16, 'SCORE: 0', {
-            font: 'bold 20px Arial',
+        // Portrait mode UI layout (400x700)
+        
+        // Score - top left
+        this.scoreText = this.add.text(10, 10, 'SCORE: 0', {
+            font: 'bold 16px Arial',
             fill: '#00ff88'
         });
 
-        // Earth label
-        this.add.text(400, 465, 'EARTH', {
-            font: 'bold 12px Arial',
+        // Earth label - above health bar
+        this.add.text(200, 575, 'EARTH', {
+            font: 'bold 11px Arial',
             fill: '#4488ff'
         }).setOrigin(0.5);
 
-        // Mega Blast label
-        this.add.text(16, 50, 'MEGA BLAST:', {
-            font: 'bold 12px Arial',
+        // Mega Blast section - horizontal, below mothership (mothership bar is at y=88, label at 102)
+        this.add.text(200, 118, 'MEGA BLAST', {
+            font: 'bold 10px Arial',
             fill: '#aa44ff'
-        });
+        }).setOrigin(0.5);
 
-        // Mega Blast gauge background (below the label)
-        this.add.rectangle(90, 87, 150, 22, 0x333333).setStrokeStyle(2, 0xaa44ff);
+        // Mega Blast gauge background - horizontal below mothership
+        this.megaBlastBg = this.add.rectangle(200, 135, 140, 12, 0x333333).setStrokeStyle(2, 0xaa44ff);
 
-        // Mega Blast gauge fill
-        this.megaBlastBar = this.add.rectangle(16, 87, 0, 16, 0xaa44ff);
+        // Mega Blast gauge fill (horizontal, fills from left)
+        this.megaBlastBar = this.add.rectangle(131, 135, 0, 8, 0xaa44ff);
         this.megaBlastBar.setOrigin(0, 0.5);
 
         // Mega Blast percentage
-        this.megaBlastText = this.add.text(90, 87, '0%', {
-            font: 'bold 12px Arial',
+        this.megaBlastText = this.add.text(200, 135, '0%', {
+            font: 'bold 9px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
 
-        // Ready indicator
-        this.megaBlastReadyText = this.add.text(90, 110, 'TAP MOTHERSHIP!', {
-            font: 'bold 12px Arial',
+        // Ready indicator - appears when charged
+        this.megaBlastReadyText = this.add.text(200, 152, 'TAP MOTHERSHIP!', {
+            font: 'bold 11px Arial',
             fill: '#ffff00'
         }).setOrigin(0.5).setVisible(false);
 
-        // Instructions
-        this.add.text(400, 16, 'TAP enemies to destroy | TAP Mothership when charged', {
-            font: '11px Arial',
-            fill: '#666666'
-        }).setOrigin(0.5);
-
-        // Power-up indicator (hidden initially)
-        this.powerUpText = this.add.text(780, 50, '', {
-            font: 'bold 14px Arial',
+        // Power-up indicator (top right)
+        this.powerUpText = this.add.text(390, 10, '', {
+            font: 'bold 11px Arial',
             fill: '#ffff00'
-        }).setOrigin(1, 0.5).setVisible(false);
+        }).setOrigin(1, 0).setVisible(false);
 
         // Insta-kill counter
-        this.instaKillText = this.add.text(780, 75, '', {
-            font: 'bold 12px Arial',
+        this.instaKillText = this.add.text(390, 28, '', {
+            font: 'bold 10px Arial',
             fill: '#ff8800'
-        }).setOrigin(1, 0.5).setVisible(false);
+        }).setOrigin(1, 0).setVisible(false);
     }
 
     handleTap(pointer) {
@@ -412,9 +408,9 @@ class GameScene extends Phaser.Scene {
         // Find a non-overlapping spawn position
         let x = this.findNonOverlappingX();
         
-        // Create enemy
+        // Create enemy - portrait mode spawn position
         const spriteKey = enemyType === 'special' ? 'enemy-special' : `enemy-${enemyType.slice(-1).toLowerCase()}`;
-        const enemy = this.enemies.create(x, 120, spriteKey);
+        const enemy = this.enemies.create(x, 115, spriteKey);
         
         if (!enemy) return;
 
@@ -431,8 +427,8 @@ class GameScene extends Phaser.Scene {
         // Play animation
         enemy.play(`${spriteKey}-idle`);
 
-        // Enemy starts moving down until it reaches its target Y position
-        enemy.targetY = Phaser.Math.Between(180, 300); // Stop in upper half
+        // Enemy target Y - portrait mode has more vertical space
+        enemy.targetY = Phaser.Math.Between(200, 400); // Stop in upper-middle area
         enemy.setVelocityY(config.speed);
         enemy.hasReachedPosition = false;
         enemy.hasActiveLaser = false; // Track if laser is in flight
@@ -449,15 +445,16 @@ class GameScene extends Phaser.Scene {
     }
 
     findNonOverlappingX() {
-        const minSpacing = 60; // Minimum space between enemies
+        const minSpacing = 50; // Minimum space between enemies - smaller for portrait
         const attempts = 20;
         
+        // Portrait mode: narrower x range
         for (let i = 0; i < attempts; i++) {
-            const testX = Phaser.Math.Between(80, 720);
+            const testX = Phaser.Math.Between(50, 350);
             let overlapping = false;
             
             this.enemies.getChildren().forEach(enemy => {
-                if (Math.abs(enemy.x - testX) < minSpacing && enemy.y < 200) {
+                if (Math.abs(enemy.x - testX) < minSpacing && enemy.y < 250) {
                     overlapping = true;
                 }
             });
@@ -468,7 +465,7 @@ class GameScene extends Phaser.Scene {
         }
         
         // If no spot found after attempts, return random position
-        return Phaser.Math.Between(80, 720);
+        return Phaser.Math.Between(50, 350);
     }
 
     createEnemyHealthBar(enemy) {
@@ -846,8 +843,9 @@ class GameScene extends Phaser.Scene {
         const types = ['multishot', 'health', 'instakill'];
         const type = Phaser.Utils.Array.GetRandom(types);
 
-        const x = Phaser.Math.Between(100, 700);
-        const powerUp = this.powerUps.create(x, 100, `powerup-${type}`);
+        // Portrait mode: narrower x range
+        const x = Phaser.Math.Between(60, 340);
+        const powerUp = this.powerUps.create(x, 130, `powerup-${type}`);
         powerUp.powerUpType = type;
         powerUp.setDepth(12);
         powerUp.isBeingAbsorbed = false;
@@ -930,15 +928,15 @@ class GameScene extends Phaser.Scene {
             if (this.earth) this.earth.clearTint();
         });
 
-        // Show heal text
-        const text = this.add.text(400, 480, `+${amount} EARTH HEALTH`, {
-            font: 'bold 16px Arial',
+        // Show heal text - portrait mode position
+        const text = this.add.text(200, 560, `+${amount} EARTH HEALTH`, {
+            font: 'bold 14px Arial',
             fill: '#00ff00'
         }).setOrigin(0.5).setDepth(21);
 
         this.tweens.add({
             targets: text,
-            y: 430,
+            y: 510,
             alpha: 0,
             duration: 1000,
             onComplete: () => text.destroy()
@@ -981,7 +979,8 @@ class GameScene extends Phaser.Scene {
 
     updateMegaBlastUI() {
         const percent = this.megaBlastGauge / this.megaBlastMax;
-        this.megaBlastBar.width = 146 * percent;
+        // Horizontal gauge - width changes
+        this.megaBlastBar.width = 136 * percent;
         this.megaBlastText.setText(Math.floor(percent * 100) + '%');
 
         if (this.megaBlastGauge >= this.megaBlastMax && !this.megaBlastReady) {
@@ -1002,9 +1001,9 @@ class GameScene extends Phaser.Scene {
                 if (this.player) this.player.clearTint();
             });
 
-            // Add pulsing target indicator on mothership
+            // Add pulsing target indicator on mothership - smaller for portrait
             if (!this.mothershipTarget) {
-                this.mothershipTarget = this.add.circle(this.mothership.x, this.mothership.y, 50, 0xaa44ff, 0);
+                this.mothershipTarget = this.add.circle(this.mothership.x, this.mothership.y, 40, 0xaa44ff, 0);
                 this.mothershipTarget.setStrokeStyle(3, 0xaa44ff);
                 this.mothershipTarget.setDepth(4);
                 
@@ -1047,11 +1046,11 @@ class GameScene extends Phaser.Scene {
         // Sound effect
         if (soundManager) soundManager.megaBlast();
 
-        // Create massive beam
-        const beam = this.add.rectangle(this.player.x, 300, 40, 500, 0xaa44ff);
+        // Create massive beam - portrait mode (taller)
+        const beam = this.add.rectangle(this.player.x, 300, 35, 600, 0xaa44ff);
         beam.setDepth(25);
 
-        const glow = this.add.rectangle(this.player.x, 300, 80, 500, 0xdd88ff, 0.4);
+        const glow = this.add.rectangle(this.player.x, 300, 70, 600, 0xdd88ff, 0.4);
         glow.setDepth(24);
 
         // Screen flash
@@ -1210,7 +1209,7 @@ class GameScene extends Phaser.Scene {
 
     updateEarthHealthBar() {
         const percent = Math.max(0, this.earthHealth / this.earthMaxHealth);
-        this.earthHealthBar.width = 196 * percent;
+        this.earthHealthBar.width = 176 * percent; // Portrait mode width
 
         if (percent <= 0.25) {
             this.earthHealthBar.setFillStyle(0xff0000);
@@ -1339,26 +1338,27 @@ class GameScene extends Phaser.Scene {
         // Sound effect
         if (soundManager) soundManager.gameOver();
 
-        const overlay = this.add.rectangle(400, 300, 800, 600, 0x000000, 0.85);
+        // Portrait mode overlay (400x700)
+        const overlay = this.add.rectangle(200, 350, 400, 700, 0x000000, 0.85);
         overlay.setDepth(200);
 
-        this.add.text(400, 180, 'GAME OVER', {
-            font: 'bold 64px Arial',
+        this.add.text(200, 220, 'GAME OVER', {
+            font: 'bold 42px Arial',
             fill: '#ff4444'
         }).setOrigin(0.5).setDepth(201);
 
-        this.add.text(400, 270, 'You did not save the Earth', {
-            font: '28px Arial',
+        this.add.text(200, 290, 'You did not save the Earth', {
+            font: '18px Arial',
             fill: '#ff8888'
         }).setOrigin(0.5).setDepth(201);
 
-        this.add.text(400, 340, 'Final Score: ' + this.score, {
-            font: '24px Arial',
+        this.add.text(200, 340, 'Final Score: ' + this.score, {
+            font: '20px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5).setDepth(201);
 
-        const restartText = this.add.text(400, 440, 'Tap or press SPACE to try again', {
-            font: '18px Arial',
+        const restartText = this.add.text(200, 420, 'Tap to try again', {
+            font: '16px Arial',
             fill: '#00ff88'
         }).setOrigin(0.5).setDepth(201);
 
@@ -1417,12 +1417,14 @@ class GameScene extends Phaser.Scene {
         // Sound effect
         if (soundManager) soundManager.victory();
 
-        const overlay = this.add.rectangle(400, 300, 800, 600, 0x001133, 0.9);
+        // Portrait mode overlay (400x700)
+        const overlay = this.add.rectangle(200, 350, 400, 700, 0x001133, 0.9);
         overlay.setDepth(200);
 
-        const winText = this.add.text(400, 180, 'You saved Earth!', {
-            font: 'bold 56px Arial',
-            fill: '#00ff88'
+        const winText = this.add.text(200, 200, 'You saved\nEarth!', {
+            font: 'bold 40px Arial',
+            fill: '#00ff88',
+            align: 'center'
         }).setOrigin(0.5).setDepth(201);
 
         this.tweens.add({
@@ -1433,18 +1435,19 @@ class GameScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.add.text(400, 270, 'The Mothership has been destroyed!', {
-            font: '22px Arial',
-            fill: '#88ffaa'
+        this.add.text(200, 300, 'The Mothership\nhas been destroyed!', {
+            font: '16px Arial',
+            fill: '#88ffaa',
+            align: 'center'
         }).setOrigin(0.5).setDepth(201);
 
-        this.add.text(400, 340, 'Final Score: ' + this.score, {
-            font: '28px Arial',
+        this.add.text(200, 370, 'Final Score: ' + this.score, {
+            font: '22px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5).setDepth(201);
 
-        const restartText = this.add.text(400, 440, 'Tap or press SPACE to play again', {
-            font: '18px Arial',
+        const restartText = this.add.text(200, 450, 'Tap to play again', {
+            font: '16px Arial',
             fill: '#ffff00'
         }).setOrigin(0.5).setDepth(201);
 
@@ -1456,22 +1459,22 @@ class GameScene extends Phaser.Scene {
             repeat: -1
         });
 
-        // Celebration particles
+        // Celebration particles - portrait mode
         this.time.addEvent({
             delay: 150,
             callback: () => {
                 if (this.gameWon) {
-                    const x = Phaser.Math.Between(100, 700);
+                    const x = Phaser.Math.Between(50, 350);
                     const colors = [0x00ff88, 0xffff00, 0x00ffff, 0xaa44ff];
 
                     for (let i = 0; i < 4; i++) {
                         const color = Phaser.Utils.Array.GetRandom(colors);
-                        const particle = this.add.circle(x, 600, Phaser.Math.Between(3, 6), color);
+                        const particle = this.add.circle(x, 700, Phaser.Math.Between(3, 6), color);
                         particle.setDepth(202);
 
                         this.tweens.add({
                             targets: particle,
-                            y: Phaser.Math.Between(100, 400),
+                            y: Phaser.Math.Between(100, 500),
                             alpha: 0,
                             duration: 1200,
                             onComplete: () => particle.destroy()
@@ -1511,9 +1514,9 @@ class GameScene extends Phaser.Scene {
     updateStarfield() {
         for (const star of this.stars) {
             star.y += star.speed * (1/60);
-            if (star.y > 620) {
+            if (star.y > 720) {
                 star.y = -10;
-                star.x = Phaser.Math.Between(0, 800);
+                star.x = Phaser.Math.Between(0, 400);
             }
         }
     }
@@ -1561,8 +1564,8 @@ class GameScene extends Phaser.Scene {
                 }
             }
 
-            // Destroy if somehow goes off screen (shouldn't happen now)
-            if (enemy.y > 550) {
+            // Destroy if somehow goes off screen (shouldn't happen now) - portrait bounds
+            if (enemy.y > 560) {
                 if (enemy.floatTween) enemy.floatTween.stop();
                 if (enemy.healthBar) enemy.healthBar.destroy();
                 if (enemy.healthBarBg) enemy.healthBarBg.destroy();
@@ -1589,15 +1592,15 @@ class GameScene extends Phaser.Scene {
     }
 
     cleanupObjects() {
-        // Clean up lasers
+        // Clean up lasers - portrait mode bounds (400x700)
         this.playerLasers.getChildren().forEach(laser => {
-            if (laser.y < -20 || laser.y > 620 || laser.x < -20 || laser.x > 820) {
+            if (laser.y < -20 || laser.y > 720 || laser.x < -20 || laser.x > 420) {
                 laser.destroy();
             }
         });
 
         this.enemyLasers.getChildren().forEach(laser => {
-            if (laser.y > 620) {
+            if (laser.y > 720) {
                 // Allow source enemy to fire again if laser goes off screen
                 if (laser.sourceEnemy && laser.sourceEnemy.active) {
                     laser.sourceEnemy.hasActiveLaser = false;
@@ -1608,7 +1611,7 @@ class GameScene extends Phaser.Scene {
 
         // Update and clean up power cores - absorb toward player
         this.powerCores.getChildren().forEach(core => {
-            if (core.y > 620) {
+            if (core.y > 720) {
                 core.destroy();
                 return;
             }
@@ -1626,7 +1629,7 @@ class GameScene extends Phaser.Scene {
 
         // Update and clean up power-ups - absorb toward player
         this.powerUps.getChildren().forEach(powerUp => {
-            if (powerUp.y > 620) {
+            if (powerUp.y > 720) {
                 powerUp.destroy();
                 return;
             }

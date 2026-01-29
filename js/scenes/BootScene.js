@@ -71,30 +71,32 @@ class BootScene extends Phaser.Scene {
         const width = this.cameras.main.width;
         const height = this.cameras.main.height;
 
-        // Title
-        this.add.text(width / 2, height / 2 - 120, 'SAVE THE EARTH', {
-            font: 'bold 42px Arial',
-            fill: '#00ff88'
+        // Title - portrait optimized
+        this.add.text(width / 2, height / 2 - 100, 'SAVE THE\nEARTH', {
+            font: 'bold 32px Arial',
+            fill: '#00ff88',
+            align: 'center'
         }).setOrigin(0.5);
 
-        this.add.text(width / 2, height / 2 - 80, 'V2 - TAP DEFENSE', {
-            font: '20px Arial',
+        this.add.text(width / 2, height / 2 - 40, 'TAP DEFENSE', {
+            font: '16px Arial',
             fill: '#aa44ff'
         }).setOrigin(0.5);
 
         // Loading text
-        const loadingText = this.add.text(width / 2, height / 2 - 30, 'Loading...', {
-            font: '20px Arial',
+        const loadingText = this.add.text(width / 2, height / 2 + 10, 'Loading...', {
+            font: '18px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
 
-        // Progress bar
-        const progressBarBg = this.add.rectangle(width / 2, height / 2 + 10, 400, 25, 0x444444);
-        const progressBar = this.add.rectangle(width / 2 - 195, height / 2 + 10, 0, 18, 0x00ff88);
+        // Progress bar - narrower for portrait
+        const barWidth = Math.min(300, width - 60);
+        const progressBarBg = this.add.rectangle(width / 2, height / 2 + 50, barWidth, 22, 0x444444);
+        const progressBar = this.add.rectangle(width / 2 - barWidth/2 + 5, height / 2 + 50, 0, 16, 0x00ff88);
         progressBar.setOrigin(0, 0.5);
 
         this.load.on('progress', (value) => {
-            progressBar.width = 390 * value;
+            progressBar.width = (barWidth - 10) * value;
         });
 
         this.load.on('complete', () => {
